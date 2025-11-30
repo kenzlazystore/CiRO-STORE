@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CiRO STORE — Ultra Premium (Cart + Live Orders + Testimoni)</title>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+<style>
+  /* ====== RESET ====== */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: Inter, Poppins, system-ui, -apple-system, "Segoe UI", Roboto;
+    background: #050507; color:#fff; -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale; overflow-x:hidden;
+  }
+
+  /* ====== PRELOADER ====== */
+  #preloader{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#000,#07070a);flex-direction:column;gap:14px}
+  .spinner{width:60px;height:60px;border-radius:50%;background:conic-gradient(#00f2ff,#ff00d4,#ffd700,#00f2ff);animation:spin 1.8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  #preloader p{color:#bff;font-weight:700;letter-spacing:.6px}
+
+  /* ====== BACKGROUND PARTICLES ====== */
+  .bg-wrap{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(ellipse at 10% 10%, rgba(0,242,255,0.04), transparent 10%),radial-gradient(ellipse at 90% 80%, rgba(255,0,212,0.03), transparent 12%),linear-gradient(180deg,#050507 0%,#08060a 100%)}
+  .particle{position:absolute;border-radius:50%;opacity:.07;pointer-events:none;filter:blur(.5px)}
+
+  /* ====== LAYOUT ====== */
+  .wrap{max-width:980px;margin:12px auto;padding:12px}
+  header{display:flex;gap:12px;align-items:center;justify-content:space-between}
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;color:transparent;background:linear-gradient(90deg,#00f2ff,#ff00d4,#ffd700);-webkit-background-clip:text}
+  .title{font-weight:800;font-size:20px}
+  .subtitle{font-size:12px;color:#9aa0a6;margin-top:2px}
+  nav{display:flex;gap:8px;align-items:center}
+
+  .btn-nav{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:10px;color:rgba(255,255,255,0.9);font-weight:700;cursor:pointer}
+  .btn-nav:hover{transform:translateY(-4px)}
+
+  /* ====== FILTERS + HEADER INFO ====== */
+  .top-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+  .section-title{text-align:center;color:#9ff;letter-spacing:.6px;font-weight:800;margin-bottom:8px}
+  .muted{color:#9aa0a6;font-size:13px}
+
+  .filters{display:flex;gap:8px;margin:18px 0;flex-wrap:wrap}
+  .chip{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);cursor:pointer;font-weight:700;color:#dfe7ea}
+  .chip.active{background:linear-gradient(90deg,#00f2ff,#ff00d4);color:#000;box-shadow:0 8px 22px rgba(0,0,0,0.5)}
+
+  .row{display:flex;gap:8px;align-items:center}
+  .clock{font-weight:800;color:#9ff;font-size:14px}
+
+  /* ====== GRID ====== */
+  .grid{display:grid;grid-template-columns:1fr;gap:14px;align-items:start}
+  @media(min-width:560px){ .grid{grid-template-columns:1fr 1fr; max-width:980px; margin:0 auto} }
+
+  /* ====== CARD (tilt + anim) ====== */
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:10px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 6px 22px rgba(2,6,23,0.6);display:flex;flex-direction:column;gap:10px;transition:transform .28s ease,box-shadow .28s ease;border-color:transparent;will-change:transform}
+  .card[data-animated="in"]{animation:cardIn .6s ease forwards}
+  @keyframes cardIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .card:hover{transform:translateY(-12px) scale(1.01);box-shadow:0 16px 40px rgba(0,242,255,0.06),0 8px 40px rgba(255,0,212,0.04);border-color:rgba(255,255,255,0.08)}
+
+  /* tilt effect (light) */
+  .card.tilt{transform-origin:center center;transition:transform .12s ease}
+
+  .img-1x1{width:100%;aspect-ratio:1/1;border-radius:12px;overflow:hidden;background:#000}
+  .img-1x1 img{width:100%;height:100%;object-fit:cover;display:block}
+
+  .p-title{font-weight:800;font-size:15px}
+  .muted-small{color:#9aa0a6;font-size:13px}
+  .p-price{color:#7fffa8;font-weight:800}
+
+  .actions{display:flex;gap:8px}
+  .buy-btn{flex:1;padding:10px;border-radius:10px;text-align:center;background:linear-gradient(90deg,#00f2ff,#0fe);color:#000;font-weight:900;text-decoration:none;box-shadow:0 8px 24px rgba(0,242,255,0.12);transition:transform .18s ease}
+  .buy-btn:hover{transform:scale(1.03);box-shadow:0 18px 36px rgba(0,242,255,0.18)}
+  .info-btn{padding:10px;border-radius:10px;text-align:center;border:1px solid rgba(255,255,255,0.06);color:#dfe7ea;font-weight:700;text-decoration:none}
+
+  /* CART BUTTON FLOAT */
+  .cart-fab{position:fixed;right:14px;bottom:14px;z-index:999;background:linear-gradient(90deg,#ff00d4,#ffd700);color:#001;padding:12px 14px;border-radius:999px;font-weight:900;box-shadow:0 12px 36px rgba(255,0,212,0.12);cursor:pointer}
+  .cart-count{background:#001;color:#fff;padding:4px 8px;border-radius:999px;margin-left:8px;font-weight:800}
+
+  /* CART SIDEBAR */
+  .cart-panel{position:fixed;right:0;top:0;height:100vh;width:360px;max-width:92vw;background:#060607;padding:18px;box-shadow:-20px 0 60px rgba(0,0,0,0.6);z-index:1000;transform:translateX(110%);transition:transform .28s ease}
+  .cart-panel.open{transform:translateX(0)}
+  .cart-panel h3{font-size:18px;margin-bottom:10px}
+  .cart-items{display:flex;flex-direction:column;gap:10px;max-height:56vh;overflow:auto;padding-right:6px}
+  .cart-item{display:flex;gap:10px;align-items:center}
+  .cart-item .thumb{width:64px;height:64px;border-radius:8px;overflow:hidden}
+  .cart-item .thumb img{width:100%;height:100%;object-fit:cover}
+  .cart-item .meta{flex:1}
+  .qty{display:inline-flex;align-items:center;gap:6px;background:#0b0b0b;padding:6px;border-radius:8px}
+  .cart-total{margin-top:12px;font-weight:800}
+  .checkout-btn{display:block;background:linear-gradient(90deg,#00f2ff,#ff00d4);color:#001;padding:12px;border-radius:12px;text-align:center;margin-top:12px;text-decoration:none;font-weight:900}
+
+  /* LIVE ORDER TOAST */
+  .live-toast{position:fixed;left:14px;bottom:14px;z-index:999;background:linear-gradient(90deg,#00f2ff,#ff00d4);padding:10px 12px;border-radius:10px;color:#001;font-weight:800;box-shadow:0 12px 36px rgba(0,242,255,0.08);opacity:0;transform:translateY(8px);transition:all .35s}
+  .live-toast.show{opacity:1;transform:translateY(0)}
+
+  /* TESTIMONI */
+  .testimoni{margin-top:18px;padding:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+  .testi-item{padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);margin-bottom:8px}
+
+  /* FOOTER */
+  footer{margin-top:18px;text-align:center;color:#aab3b8;padding:24px 6px;font-size:14px;border-top:1px solid rgba(255,255,255,0.03)}
+  @media(max-width:560px){ .cart-panel{width:92vw} }
+</style>
+</head>
+<body>
+
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <div class="spinner" aria-hidden="true"></div>
+    <p>CIRO STORE — SEDANG MEMUAT...</p>
+  </div>
+
+  <!-- PARTICLE BACKGROUND -->
+  <div class="bg-wrap" aria-hidden="true"></div>
+
+  <div class="wrap" role="main">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">CiRO</div>
+        <div>
+          <div class="title">CiRO STORE</div>
+          <div class="subtitle">Joki ML • Room Wangi • Top Up</div>
+        </div>
+      </div>
+
+      <nav>
+        <button class="btn-nav" onclick="scrollToSection()">Order</button>
+      </nav>
+    </header>
+
+    <div class="top-row">
+      <div>
+        <div class="section-title">DAFTAR LAYANAN</div>
+        <div class="muted">Klik filter untuk menyaring produk</div>
+      </div>
+
+      <div class="row">
+        <div class="clock" id="clock">--:--</div>
+        <div class="muted" id="openStatus" style="margin-left:8px">—</div>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filters" id="filters" aria-label="Filter kategori">
+      <div class="chip active" data-filter="all">ALL</div>
+      <div class="chip" data-filter="rw">RW</div>
+      <div class="chip" data-filter="joki">JOKI</div>
+      <div class="chip" data-filter="topup">TOPUP</div>
+    </div>
+
+    <!-- GRID PRODUK -->
+    <div class="grid" id="grid">
+      <!-- Card 1 -->
+      <article class="card" data-cat="rw" data-animated="in">
+        <div class="img-1x1"><img src="https://i.postimg.cc/zBVqJ6fs/IMG-20251130-WA0118.jpg" alt="RW PREM 150K"></div>
+        <div class="p-title">RW PREM</div>
+        <div class="muted-small">Kode: RW-PREM-150</div>
+        <div class="p-price">Rp 150.000</div>
+        <div class="actions">
+          <a class="buy-btn" href="#" data-id="rw-prem-150" data-name="RW PREM" data-price="150000">BANG MAU RW PREM 150K</a>
+          <a class="info-btn" href="tel:+6287859940530">CALL</a>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="card" data-cat="rw" data-animated="in">
+        <div class="img-1x1"><img src="https://i.postimg.cc/LXnmHwsr/IMG-20251130-WA0119.jpg" alt="RW PREM 300k"></div>
+        <div class="p-title">RW PREM</div>
+        <div class="muted-small">Kode: RW-PREM-300k</div>
+        <div class="p-price">Rp 300.000</div>
+        <div class="actions">
+          <a class="buy-btn" href="#" data-id="rw-prem-100" data-name="RW PREM" data-price="100000">BANG MAU RW PREM 300K</a>
+          <a class="info-btn" href="tel:+6287859940530">CALL</a>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="card" data-cat="rw" data-animated="in">
+        <div class="img-1x1"><img src="https://i.postimg.cc/rph82MqB/IMG-20251130-WA0123.jpg" alt="RW BIASA 60K"></div>
+        <div class="p-title">RW BIASA</div>
+        <div class="muted-small">Kode: RW-BIASA-60</div>
+        <div class="p-price">Rp 60.000</div>
+        <div class="actions">
+          <a class="buy-btn" href="#" data-id="rw-biasa-60" data-name="RW BIASA" data-price="60000">BANG MAU RW BIASA 60K</a>
+          <a class="info-btn" href="tel:+6287859940530">CALL</a>
+        </div>
+      </article>
+
+      <!-- Card 4 (UPDATED TO 300K) -->
+      <article class="card" data-cat="rw" data-animated="in">
+        <div class="img-1x1"><img src="https://i.postimg.cc/cHrds2Jj/IMG-20251130-WA0124.jpg" alt="RW SPECIAL 300K"></div>
+        <div class="p-title">RW SPECIAL</div>
+        <div class="muted-small">Kode: RW-SPECIAL-350</div>
+        <div class="p-price">Rp 300.000</div>
+        <div class="actions">
+          <a class="buy-btn" href="#" data-id="rw-special-300" data-name="RW SPECIAL" data-price="350000">BANG MAU RW SPECIAL 350K</a>
+          <a class="info-btn" href="tel:+6287859940530">CALL</a>
+        </div>
+      </article>
+
+      <!-- Card 5 (Joki) -->
+      <article class="card" data-cat="joki" data-animated="in">
+        <div class="img-1x1"><img src="https://i.postimg.cc/rmKq83mw/IMG-20251130-WA0115.jpg" alt="JASA JOKI MLBB"></div>
+        <div class="p-title">JASA JOKI MLBB</div>
+        <div class="muted-small">Kode: JOKI-MLBB</div>
+        <div class="p-price">LIHAT DI CHAT</div>
+        <div class="actions">
+          <!-- For joki, price = 0 (user must chat for exact) -->
+          <a class="buy-btn" href="#" data-id="joki-mlbb" data-name="JASA JOKI MLBB" data-price="0">BANG MAU JOKI MLBB</a>
+          <a class="info-btn" href="tel:+6287859940530">CALL</a>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- TESTIMONI (no photos) -->
+    <section class="testimoni" aria-label="Testimoni Pelanggan">
+      <h3 style="margin-bottom:8px">Testimoni Pelanggan</h3>
+      <div class="testi-item"><strong>Rian</strong> — "Jasa joki cepat & langsung naik. Recommended!"</div>
+      <div class="testi-item"><strong>Siti</strong> — "Room wangi top banget, win streak langsung jalan."</div>
+      <div class="testi-item"><strong>Andi</strong> — "Proses pembayaran gampang, admin ramah."</div>
+    </section>
+
+    <footer>
+      CiRO STORE • Pembayaran via GoPay — <strong style="color:#7fffa8">087859940530</strong><br>
+      © <span id="year"></span> CiRO STORE — All rights reserved
+    </footer>
+  </div>
+
+  <!-- CART FAB -->
+  <button class="cart-fab" id="cartFab">KERANJANG <span class="cart-count" id="cartCount">0</span></button>
+
+  <!-- LIVE ORDER TOAST -->
+  <div class="live-toast" id="liveToast" aria-live="polite" role="status"></div>
+
+  <!-- CART PANEL -->
+  <aside class="cart-panel" id="cartPanel" aria-hidden="true">
+    <h3>Keranjang Kamu</h3>
+    <div class="cart-items" id="cartItems">
+      <!-- items -->
+    </div>
+    <div class="cart-total" id="cartTotal">Total: Rp 0</div>
+    <a href="#" class="checkout-btn" id="checkoutBtn">CHECKOUT VIA WHATSAPP</a>
+    <button style="margin-top:12px;padding:10px;border-radius:10px;background:#222;color:#fff;border:0;cursor:pointer" id="closeCart">Tutup</button>
+  </aside>
+
+<script>
+/* ====== PRELOADER ====== */
+window.addEventListener('load', function(){
+  setTimeout(()=>{
+    const p = document.getElementById('preloader');
+    p.style.opacity='0'; p.style.pointerEvents='none';
+    setTimeout(()=>p.remove(),450);
+  }, 600);
+});
+
+/* ====== BACKGROUND PARTICLES ====== */
+(function(){
+  const bg = document.querySelector('.bg-wrap');
+  const count = 22;
+  for(let i=0;i<count;i++){
+    const el = document.createElement('div');
+    el.className = 'particle';
+    const size = 3 + Math.random()*10;
+    el.style.width = size+'px'; el.style.height = size+'px';
+    el.style.left = Math.random()*100 + 'vw';
+    el.style.top = Math.random()*120 + 'vh';
+    el.style.opacity = 0.02 + Math.random()*0.12;
+    el.style.animationDuration = (6 + Math.random()*8)+'s';
+    el.style.background = 'radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(0,242,255,0.6) 30%, rgba(255,0,212,0.2) 70%, rgba(255,215,0,0) 100%)';
+    bg.appendChild(el);
+  }
+})();
+
+/* ====== FILTERS ====== */
+(function(){
+  const chips = document.querySelectorAll('.chip');
+  const cards = document.querySelectorAll('.card');
+  chips.forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      chips.forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      const k = chip.dataset.filter;
+      cards.forEach(card=>{
+        if(k==='all') card.style.display = '';
+        else card.style.display = (card.dataset.cat === k) ? '' : 'none';
+      });
+    });
+  });
+})();
+
+/* ====== CLOCK / OPEN STATUS ====== */
+(function(){
+  const clockEl = document.getElementById('clock');
+  const statusEl = document.getElementById('openStatus');
+  function pad(n){return n<10? '0'+n:n}
+  function update(){
+    const d = new Date();
+    const h = d.getHours(), m = d.getMinutes();
+    clockEl.textContent = pad(h)+':'+pad(m);
+    const open = (h>=7 && h<23);
+    statusEl.textContent = open ? '• OPEN' : '• CLOSED';
+    statusEl.style.color = open ? '#7fffa8' : '#ff9b9b';
+  }
+  update(); setInterval(update,1000);
+})();
+
+/* ====== CART LOGIC ====== */
+const CART = { items: [] }; // {id,name,price,q,thumb}
+const formatRp = n => {
+  return 'Rp ' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
+
+function findCartIndex(id){ return CART.items.findIndex(i=>i.id===id); }
+function updateCartCount(){
+  const c = CART.items.reduce((s,i)=>s + i.q,0);
+  document.getElementById('cartCount').textContent = c;
+}
+
+function renderCart(){
+  const wrap = document.getElementById('cartItems');
+  wrap.innerHTML = '';
+  CART.items.forEach(it=>{
+    const div = document.createElement('div'); div.className='cart-item';
+    div.innerHTML = `
+      <div class="thumb"><img src="${it.thumb}" alt=""></div>
+      <div class="meta">
+        <div style="font-weight:800">${it.name}</div>
+        <div class="muted-small">${formatRp(it.price)} x ${it.q}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="qty">
+          <button data-action="dec" data-id="${it.id}" style="background:transparent;border:0;color:#fff;cursor:pointer">−</button>
+          <div style="min-width:20px;text-align:center">${it.q}</div>
+          <button data-action="inc" data-id="${it.id}" style="background:transparent;border:0;color:#fff;cursor:pointer">+</button>
+        </div>
+        <div style="margin-top:8px;color:#9aa0a6">${formatRp(it.price*it.q)}</div>
+      </div>
+    `;
+    wrap.appendChild(div);
+  });
+  // attach qty buttons
+  wrap.querySelectorAll('button[data-action]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      const id = btn.dataset.id, action = btn.dataset.action;
+      const idx = findCartIndex(id);
+      if(idx<0) return;
+      if(action==='inc'){ CART.items[idx].q++; }
+      else{ CART.items[idx].q = Math.max(0, CART.items[idx].q - 1); if(CART.items[idx].q===0) CART.items.splice(idx,1); }
+      updateCart();
+    });
+  });
+  const total = CART.items.reduce((s,i)=>s + i.price * i.q, 0);
+  document.getElementById('cartTotal').textContent = 'Total: ' + formatRp(total);
+  updateCartCount();
+}
+
+/* add to cart from product buttons */
+document.addEventListener('click', (e)=>{
+  const b = e.target.closest('.buy-btn');
+  if(!b) return;
+  e.preventDefault();
+  const id = b.dataset.id;
+  const name = b.dataset.name;
+  const price = parseInt(b.dataset.price||"0",10);
+  // thumb: find parent card img
+  const card = b.closest('.card');
+  const thumb = card ? (card.querySelector('img') ? card.querySelector('img').src : '') : '';
+  const idx = findCartIndex(id);
+  if(idx>=0) CART.items[idx].q++;
+  else CART.items.push({id,name,price,q:1,thumb});
+  renderCart();
+  // show live toast quick
+  showLiveToast(`${name} ditambahkan ke keranjang`);
+});
+
+/* update cart global */
+function updateCart(){ renderCart(); saveLocal(); }
+
+/* CART PANEL open/close */
+const cartFab = document.getElementById('cartFab');
+const cartPanel = document.getElementById('cartPanel');
+const closeCart = document.getElementById('closeCart');
+cartFab.addEventListener('click', ()=>{ cartPanel.classList.add('open'); cartPanel.setAttribute('aria-hidden','false'); renderCart(); });
+closeCart.addEventListener('click', ()=>{ cartPanel.classList.remove('open'); cartPanel.setAttribute('aria-hidden','true'); });
+
+/* checkout via WA */
+document.getElementById('checkoutBtn').addEventListener('click', (e)=>{
+  e.preventDefault();
+  if(CART.items.length===0){ alert('Keranjang kosong. Tambah produk dulu.'); return; }
+  // construct message (FULL CAPS style)
+  let lines = ['SAYA MAU ORDER CIRO STORE',''];
+  let total = 0;
+  CART.items.forEach(it=>{
+    const line = `• ${it.name} x${it.q} = ${formatRp(it.price * it.q)}`;
+    lines.push(line);
+    total += it.price * it.q;
+  });
+  lines.push('');
+  lines.push('TOTAL: ' + formatRp(total));
+  lines.push('');
+  lines.push('NAMA: ');
+  lines.push('ID / NOTE: ');
+  const msg = encodeURIComponent(lines.join('%0A'));
+  // WA link
+  const wa = `https://wa.me/6287859940530?text=${msg}`;
+  window.open(wa,'_blank');
+});
+
+/* localStorage (simple persistence) */
+function saveLocal(){ localStorage.setItem('ciro_cart', JSON.stringify(CART.items)); }
+function loadLocal(){ const d = localStorage.getItem('ciro_cart'); if(d) try{ CART.items = JSON.parse(d); }catch(e){} updateCartCount(); renderCart(); }
+loadLocal();
+
+/* helper show live toast */
+const liveToast = document.getElementById('liveToast');
+function showLiveToast(text){
+  liveToast.textContent = text;
+  liveToast.classList.add('show');
+  setTimeout(()=> liveToast.classList.remove('show'), 2800);
+}
+
+/* ====== FAKE LIVE ORDER: pool of random messages ====== */
+(function(){
+  const names = ['Riyan','Siti','Andi','Budi','Nadia','Rizal','Dewi','Fajar'];
+  const items = ['RW PREM 150K','RW PREM 300k','RW BIASA 60K','RW SPECIAL 250k','JASA JOKI MLBB'];
+  function random(min,max){ return Math.floor(min + Math.random()*(max-min+1)); }
+  function next(){
+    const user = names[random(0,names.length-1)];
+    const item = items[random(0,items.length-1)];
+    const city = ['Jakarta','Bandung','Surabaya','Medan','Makassar'][random(0,4)];
+    showLiveToast(`${user} dari ${city} baru saja order ${item}`);
+    // schedule next between 6-20s
+    setTimeout(next, (6 + Math.random()*14)*1000);
+  }
+  setTimeout(next, 3000);
+})();
+
+/* ====== TILT EFFECT on pointer move (subtle) ====== */
+(function(){
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card=>{
+    card.addEventListener('pointermove', (e)=>{
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;
+      const py = (e.clientY - r.top) / r.height;
+      const rx = (py - 0.5) * 6; // tilt amount
+      const ry = (px - 0.5) * -6;
+      card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px) scale(1.01)`;
+    });
+    card.addEventListener('pointerleave', ()=>{
+      card.style.transform = '';
+    });
+  });
+})();
+
+/* ====== YEAR ====== */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ====== scrollToSection button ====== */
+function scrollToSection(){
+  const g = document.getElementById('grid');
+  if(g) g.scrollIntoView({behavior:'smooth', block:'start'});
+}
+</script>
+</body>
+</html>
